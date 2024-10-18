@@ -3,7 +3,7 @@ name: Deploy Routine API
 on:
   push:
     branches:
-      - trunk
+      - main
 
 jobs:
   deploy:
@@ -28,4 +28,4 @@ jobs:
           npm ci
           npm run build
           pm2 start dist/main.js --name routine-api
-          
+
