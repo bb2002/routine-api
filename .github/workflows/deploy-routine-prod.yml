@@ -3,7 +3,7 @@ name: Deploy Routine API
 on:
   push:
     branches:
-      - main
+      - trunk
 
 jobs:
   deploy:
@@ -13,12 +13,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install SSH client
-      run: sudo apt-get install -y sshpass
-
-    - name: Deploy to server
-      run: |
-        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -o "PreferredAuthentications=password" -o "PubkeyAuthentication=no" -p 20022 -tt ballbot@121.136.136.157 << 'EOF'
+    - name: SSH and Deploy
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: "121.136.136.157"
+        username: "ballbot"
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: 20022
+        script: |
           pm2 stop routine-api || true
           pm2 delete routine-api || true
           cd /home/ballbot/Projects/routine-api
@@ -26,4 +28,3 @@ jobs:
           npm ci
           npm run build
           pm2 start dist/main.js --name routine-api
-        EOF
