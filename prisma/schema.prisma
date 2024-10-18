@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl", "debian-openssl-3.0.x"]
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_DATABASE_URL")
+}
+
+model User {
+    id    BigInt     @unique
+    kakao_provider_id String? @unique
+    naver_provider_id String? @unique
+    apple_provider_id String? @unique
+    role String  @default("USER")
+    created_at DateTime @default(now())
+    deleted_at DateTime?
+
+    @@index ([created_at])
+}
