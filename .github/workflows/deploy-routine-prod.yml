@@ -21,11 +21,14 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         port: 20022
         script: |
-          /home/ballbot/.nvm/versions/node/v20.17.0/bin/pm2 stop routine-api || true
-          /home/ballbot/.nvm/versions/node/v20.17.0/bin/pm2 delete routine-api || true
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # nvm 초기화
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # nvm bash_completion 초기화
+          pm2 stop routine-api || true
+          pm2 delete routine-api || true
           cd /home/ballbot/Projects/routine-api
           git pull origin main
           npm ci
           npm run build
-          /home/ballbot/.nvm/versions/node/v20.17.0/bin/pm2 start dist/main.js --name routine-api
+          pm2 start dist/main.js --name routine-api
 
