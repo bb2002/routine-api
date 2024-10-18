@@ -28,3 +28,4 @@ jobs:
           npm ci
           npm run build
           pm2 start dist/main.js --name routine-api
+          
