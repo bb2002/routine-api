@@ -4,6 +4,7 @@ import { CosmosModule } from 'src/plugins/cosmos/cosmos.module';
 
 @Module({
   providers: [ExerciseService],
-  imports: [CosmosModule]
+  imports: [CosmosModule],
+  exports: [ExerciseService]
 })
 export class ExerciseModule {}

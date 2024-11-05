@@ -6,16 +6,25 @@ import { ExerciseDto } from './dtos/Exercise.dto';
 export class ExerciseService {
   constructor(private readonly cosmosService: CosmosService) {}
 
-	async getAllExercises(): Promise<ExerciseDto> {
-		const { database, container } = await this.exerciseContainer;
+	async getAllExercises(): Promise<ExerciseDto[]> {
+		const { container } = await this.exerciseContainer;
 		
 		const { resources } = await container.items.query({
 			query: "SELECT * FROM c",
 		}).fetchAll();
 
-		resources.forEach(item => {
-			console.log(item);
-		});
+		return resources.map((resource) => ExerciseDto.toInstance(resource));
+	}
+
+	async getExercisesByCode(exerciseCodes: string[]): Promise<ExerciseDto[]> {
+		const { container } = await this.exerciseContainer;
+
+		const { resources } = await container.items.query({
+			query: "SELECT * FROM c WHERE ARRAY_CONTAINS(@ExerciseCodeArray, c.ExerciseCode)",
+  		parameters: [{ name: "@ExerciseCodeArray", value: exerciseCodes }],
+		}).fetchAll();
+
+		return resources.map((resource) => ExerciseDto.toInstance(resource));
 	}
 
 	private get exerciseContainer() {
