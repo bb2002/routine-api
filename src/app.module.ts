@@ -5,6 +5,8 @@ import { CosmosModule } from './plugins/cosmos/cosmos.module';
 import { UserModule } from './user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AppService } from './app.service';
+import { ExerciseModule } from './exercise/exercise.module';
+import { RoutineModule } from './routine/routine.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { AppService } from './app.service';
       signOptions: { expiresIn: '2w' },
     }),
     UserModule,
+    ExerciseModule,
+    RoutineModule,
   ],
   controllers: [AppController],
   providers: [AppService],
