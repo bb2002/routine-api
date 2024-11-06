@@ -1,29 +1,29 @@
-import { plainToInstance } from "class-transformer";
-import { IsString, IsUrl } from "class-validator";
+import { plainToInstance } from 'class-transformer';
+import { IsString, IsUrl } from 'class-validator';
 
 export class ExerciseDto {
-	@IsString()
-	id: string;
-	
-	@IsString()
-	exerciseName: string;
+  @IsString()
+  id: string;
 
-	@IsString()
-	exerciseCode: string;
+  @IsString()
+  exerciseName: string;
 
-	@IsUrl()
-	thumbnail: string;
+  @IsString()
+  exerciseCode: string;
 
-	@IsUrl()
-	video: string;
+  @IsUrl()
+  thumbnail: string;
 
-	static toInstance(plain: any) {
-		return plainToInstance(ExerciseDto, {
-			id: plain.id,
-			exerciseName: plain['ExerciseName'],
-			exerciseCode: plain['ExerciseCode'],
-			thumbnail: plain['Thumbnail'],
-			video: plain['Video']
-		})
-	}
+  @IsUrl()
+  video: string;
+
+  static toInstance(plain: any) {
+    return plainToInstance(ExerciseDto, {
+      id: plain.id,
+      exerciseName: plain['ExerciseName'],
+      exerciseCode: plain['ExerciseCode'],
+      thumbnail: plain['Thumbnail'],
+      video: plain['Video'],
+    });
+  }
 }
